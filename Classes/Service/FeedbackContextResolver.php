@@ -34,7 +34,9 @@ final class FeedbackContextResolver
         $moduleIdentifier = trim((string)($values['module'] ?? ''));
         $pageId = (int)($values['pageId'] ?? 0);
         $endpoint = trim((string)($values['endpoint'] ?? ''));
-        $fileIdentifier = trim((string)($values['fileIdentifier'] ?? ''));
+        $isFileModule = $this->isFileModule($moduleIdentifier);
+        // The stored folder outlives the file module, so it only counts there
+        $fileIdentifier = $isFileModule ? trim((string)($values['fileIdentifier'] ?? '')) : '';
 
         // The "id" of the open view beats the stored module state
         parse_str((string)parse_url($endpoint, PHP_URL_QUERY), $endpointQuery);
@@ -44,7 +46,7 @@ final class FeedbackContextResolver
         } elseif (MathUtility::canBeInterpretedAsInteger($endpointId)) {
             $pageId = (int)$endpointId;
         }
-        if ($this->isFileModule($moduleIdentifier)) {
+        if ($isFileModule) {
             $pageId = 0;
         }
 
