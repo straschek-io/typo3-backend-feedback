@@ -10,7 +10,7 @@ what they tried to do. With the module, page or folder and a link to the exact
 view in the mail, an administrator can reproduce the situation in one click
 and answer directly: the reporter is the Reply-To of the mail.
 
-Requires TYPO3 13.4.
+Runs on TYPO3 13.4 and 14.3 with PHP 8.2 to 8.5.
 
 ## Installation
 
@@ -102,7 +102,20 @@ The mail templates are registered in `MAIL/templateRootPaths` and
 ## Development
 
 ```
-composer ci               # all checks: validate, yaml lint, coding standards, phpstan, unit tests
-composer ci:php:unit      # unit tests only
-composer fix:php:cs       # apply coding standards fixes
+./Build/dev-setup.sh
 ```
+
+Bootstraps a TYPO3 14.3 dev instance (DDEV required, PHP 8.4) with two pages
+and two example recipients. Backend: http://127.0.0.1:59011/typo3 (`admin` /
+`BackendFeedback14!`), sent mails: `ddev mailpit`.
+
+```
+composer ci                 # all checks: validate, yaml lint, coding standards, phpstan, unit and functional tests
+composer ci:php:unit        # unit tests only
+composer ci:php:functional  # functional tests only, on SQLite
+composer fix:php:cs         # apply coding standards fixes
+```
+
+The functional tests render the toolbar button and the form and send the mail
+into a mailbox file. The GitHub Actions workflow runs unit and functional tests
+on PHP 8.2, 8.3, 8.4 and 8.5, each against TYPO3 13.4 and 14.3.

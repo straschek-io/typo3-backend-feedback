@@ -1,7 +1,9 @@
 .DS_Store
 .idea/
 /vendor/
+/public/
+/config/
+/var/
 composer.lock
 .php-cs-fixer.cache
 .phpunit.cache/
-/public/
