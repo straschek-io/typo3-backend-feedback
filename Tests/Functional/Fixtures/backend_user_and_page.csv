@@ -1,0 +1,7 @@
+"be_users"
+,"uid","pid","username","realName","email","admin","lang"
+,1,0,"editor","Erika Editor","editor@example.org",1,"default"
+"pages"
+,"uid","pid","title","slug"
+,1,0,"Home & Start","/"
+,2,1,"Products","/products"
