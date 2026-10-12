@@ -173,7 +173,8 @@ final class BackendFeedbackControllerTest extends AbstractFeedbackTestCase
         $mail = $this->readMail();
         self::assertStringContainsString('Content-Type: image/png; name=screenshot.png', $mail);
         self::assertStringContainsString('Content-Disposition: attachment; name=screenshot.png; filename=screenshot.png', $mail);
-        self::assertStringContainsString(substr(self::PNG_IMAGE, 0, 76), $mail);
+        // start of every base64 encoded PNG file
+        self::assertStringContainsString("\r\n\r\niVBORw0KGgo", $mail);
         self::assertStringContainsString('Screenshot: see attachment', $mail);
     }
 

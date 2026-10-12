@@ -10,7 +10,8 @@ what they tried to do. With the module, page or folder and a link to the exact
 view in the mail, an administrator can reproduce the situation in one click
 and answer directly: the reporter is the Reply-To of the mail.
 
-Runs on TYPO3 13.4 and 14.3 with PHP 8.2 to 8.5.
+Runs on TYPO3 13.4 and 14.3 with PHP 8.2 to 8.5 and the PHP extensions `gd`
+and `fileinfo`.
 
 ## Installation
 
@@ -88,8 +89,14 @@ field the form offers three ways to attach one picture:
 A preview shows what will be sent and a button removes it again. Nothing is
 recorded or uploaded before the user presses "Send". Pictures wider than
 1920 pixels are scaled down in the browser and large ones are converted to
-JPEG, so uploads stay well below common PHP upload limits; the server accepts
-PNG and JPEG up to 5 MB and rejects everything else.
+JPEG, so uploads stay well below common PHP upload limits.
+
+The server does not trust the browser. It accepts PNG and JPEG up to 5 MB,
+4096 x 8192 pixels and 12 megapixels, checks size and dimensions before
+decoding, and encodes the picture again with GD. Only the pixels reach the
+recipients: metadata, comments and anything appended to the file are dropped.
+The picture is never stored on the server, and its file name is always
+`screenshot.png` or `screenshot.jpg`.
 
 Screenshots can show personal or confidential data and reach every configured
 recipient by mail. Switch the feature off with the `screenshot` setting if
@@ -123,7 +130,8 @@ The mail is written in the backend language of the reporter.
   and links
 - `Classes/Service/FeedbackMailer.php`: FluidEmail, with the styles from
   `Resources/Private/Css/` embedded
-- `Classes/Service/FeedbackScreenshot.php`: validates the uploaded picture
+- `Classes/Service/FeedbackScreenshot.php`: validates the uploaded picture and
+  encodes it again
 - `Resources/Public/Css/backend-feedback.css`: styles of the screenshot
   part of the form
 - `Classes/Configuration/ExtensionSettings.php`: the extension configuration
