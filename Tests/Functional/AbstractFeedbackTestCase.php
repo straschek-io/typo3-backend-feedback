@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace StraschekIo\BackendFeedback\Tests\Functional;
 
+use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -29,8 +30,9 @@ abstract class AbstractFeedbackTestCase extends FunctionalTestCase
     /**
      * @param array<string, string> $queryParams
      * @param array<string, string> $parsedBody
+     * @param array<string, UploadedFileInterface> $uploadedFiles
      */
-    protected function createBackendRequest(string $method = 'GET', array $queryParams = [], array $parsedBody = []): ServerRequest
+    protected function createBackendRequest(string $method = 'GET', array $queryParams = [], array $parsedBody = [], array $uploadedFiles = []): ServerRequest
     {
         $serverParams = [
             'HTTP_HOST' => 'example.org',
@@ -42,6 +44,7 @@ abstract class AbstractFeedbackTestCase extends FunctionalTestCase
         $request = (new ServerRequest(self::BACKEND_URL, $method, 'php://input', [], $serverParams))
             ->withQueryParams($queryParams)
             ->withParsedBody($parsedBody)
+            ->withUploadedFiles($uploadedFiles)
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         $GLOBALS['TYPO3_REQUEST'] = $request;

@@ -6,9 +6,12 @@ namespace StraschekIo\BackendFeedback\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use Psr\Log\LoggerInterface;
+use StraschekIo\BackendFeedback\Configuration\ExtensionSettings;
 use StraschekIo\BackendFeedback\Service\FeedbackContextResolver;
 use StraschekIo\BackendFeedback\Service\FeedbackMailer;
+use StraschekIo\BackendFeedback\Service\FeedbackScreenshot;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
@@ -28,6 +31,7 @@ final class PermissionFeedbackController
         private readonly FeedbackMailer $mailer,
         private readonly LanguageServiceFactory $languageServiceFactory,
         private readonly LoggerInterface $logger,
+        private readonly ExtensionSettings $settings,
     ) {}
 
     public function formAction(ServerRequestInterface $request): ResponseInterface
@@ -38,6 +42,7 @@ final class PermissionFeedbackController
             'context' => $context,
             'values' => $request->getQueryParams(),
             'recipientsConfigured' => $this->mailer->getRecipients() !== [],
+            'screenshotEnabled' => $this->settings->isScreenshotEnabled(),
         ]);
 
         return new HtmlResponse($view->render('Feedback/Form'));
@@ -57,8 +62,16 @@ final class PermissionFeedbackController
         }
 
         try {
+            $screenshot = $this->resolveScreenshot($request);
+        } catch (\InvalidArgumentException $exception) {
+            $this->logger->notice('Permission feedback screenshot rejected: {message}', ['message' => $exception->getMessage()]);
+
+            return $this->jsonError('error.screenshotInvalid');
+        }
+
+        try {
             $context = $this->contextResolver->resolve($request, $body);
-            $this->mailer->send($request, $GLOBALS['BE_USER'], $context, $message);
+            $this->mailer->send($request, $GLOBALS['BE_USER'], $context, $message, $screenshot);
         } catch (\Throwable $exception) {
             $this->logger->error('Permission feedback mail failed: {message}', ['message' => $exception->getMessage(), 'exception' => $exception]);
 
@@ -70,6 +83,16 @@ final class PermissionFeedbackController
             'title' => $this->translate('notification.sent.title'),
             'message' => $this->translate('notification.sent.message'),
         ]);
+    }
+
+    private function resolveScreenshot(ServerRequestInterface $request): ?FeedbackScreenshot
+    {
+        $file = $request->getUploadedFiles()['screenshot'] ?? null;
+        if (!$file instanceof UploadedFileInterface || $file->getError() === UPLOAD_ERR_NO_FILE || !$this->settings->isScreenshotEnabled()) {
+            return null;
+        }
+
+        return FeedbackScreenshot::fromUploadedFile($file);
     }
 
     private function jsonError(string $labelKey): JsonResponse

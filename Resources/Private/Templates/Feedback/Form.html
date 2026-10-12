@@ -1,4 +1,4 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:if condition="!{recipientsConfigured}">
     <div class="alert alert-warning permission-feedback-form__warning">
         <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:error.noRecipients"/>
@@ -38,5 +38,34 @@
         <textarea id="permission-feedback-message" name="message" class="form-control" rows="6" required="required" autofocus="autofocus"
             placeholder="{f:translate(key: 'LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:form.messagePlaceholder')}"></textarea>
     </div>
+
+    <f:if condition="{screenshotEnabled}">
+        <div class="form-group permission-feedback-form__screenshot">
+            <span class="form-label"><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:screenshot.label"/></span>
+            <p class="permission-feedback-form__screenshot-hint">
+                <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:screenshot.hint"/>
+            </p>
+            <div class="permission-feedback-form__screenshot-actions">
+                <button type="button" class="btn btn-default t3js-permission-feedback-screenshot-capture" hidden="hidden">
+                    <core:icon identifier="actions-image" size="small"/>
+                    <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:screenshot.capture"/>
+                </button>
+                <label class="btn btn-default permission-feedback-form__screenshot-choose">
+                    <core:icon identifier="actions-upload" size="small"/>
+                    <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:screenshot.choose"/>
+                    <input type="file" class="visually-hidden t3js-permission-feedback-screenshot-file" accept="image/png,image/jpeg">
+                </label>
+            </div>
+            <figure class="permission-feedback-form__screenshot-preview t3js-permission-feedback-screenshot-preview" hidden="hidden">
+                <img class="permission-feedback-form__screenshot-image t3js-permission-feedback-screenshot-image" src="data:," alt="{f:translate(key: 'LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:screenshot.previewAlternative')}">
+                <figcaption class="permission-feedback-form__screenshot-caption">
+                    <button type="button" class="btn btn-default btn-sm t3js-permission-feedback-screenshot-remove">
+                        <core:icon identifier="actions-delete" size="small"/>
+                        <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:screenshot.remove"/>
+                    </button>
+                </figcaption>
+            </figure>
+        </div>
+    </f:if>
 </form>
 </html>

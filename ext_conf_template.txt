@@ -4,5 +4,8 @@ recipients =
 # cat=basic;type=string;label=Toolbar label: Text of the toolbar button and title of the modal. Empty uses the translated default "Report missing permission".
 toolbarLabel =
 
+# cat=basic;type=boolean;label=Screenshot: Let users attach a screenshot or another image of what they see to the feedback.
+screenshot = 1
+
 # cat=basic;type=string;label=Subject prefix: Start of the mail subject. Empty uses the translated default "[TYPO3 permissions]".
 subjectPrefix =

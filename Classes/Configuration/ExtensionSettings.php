@@ -44,6 +44,11 @@ final class ExtensionSettings
         return $this->getString('subjectPrefix');
     }
 
+    public function isScreenshotEnabled(): bool
+    {
+        return $this->getString('screenshot') !== '0';
+    }
+
     private function getString(string $name): string
     {
         $settings = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][self::EXTENSION_KEY] ?? [];

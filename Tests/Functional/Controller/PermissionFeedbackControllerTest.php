@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use StraschekIo\BackendFeedback\Controller\PermissionFeedbackController;
 use StraschekIo\BackendFeedback\Tests\Functional\AbstractFeedbackTestCase;
+use TYPO3\CMS\Core\Http\UploadedFile;
 
 final class PermissionFeedbackControllerTest extends AbstractFeedbackTestCase
 {
@@ -24,6 +25,8 @@ final class PermissionFeedbackControllerTest extends AbstractFeedbackTestCase
         'endpoint' => '/typo3/module/file/list?token=secret&id=1%3A%2Fuser_upload%2F',
         'fileIdentifier' => '',
     ];
+
+    private const PNG_IMAGE = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
 
     private string $mailboxFile;
 
@@ -54,6 +57,24 @@ final class PermissionFeedbackControllerTest extends AbstractFeedbackTestCase
     public function formShowsFolderInsteadOfPageInTheFileModule(): void
     {
         $markup = $this->renderForm(self::FOLDER_VIEW);
+
+        self::assertStringContainsString('<dd>1:/user_upload/</dd>', $markup);
+        self::assertStringNotContainsString('Home &amp; Start', $markup);
+    }
+
+    #[Test]
+    public function formIgnoresStoredFolderOutsideTheFileModule(): void
+    {
+        $markup = $this->renderForm(['fileIdentifier' => '1:/user_upload/'] + self::PAGE_VIEW);
+
+        self::assertStringContainsString('Home &amp; Start [1]', $markup);
+        self::assertStringNotContainsString('<dd>1:/user_upload/</dd>', $markup);
+    }
+
+    #[Test]
+    public function formShowsStoredFolderInTheFileModuleWithoutFolderInTheAddress(): void
+    {
+        $markup = $this->renderForm(['fileIdentifier' => '1:/user_upload/', 'endpoint' => '/typo3/module/file/list?token=secret'] + self::FOLDER_VIEW);
 
         self::assertStringContainsString('<dd>1:/user_upload/</dd>', $markup);
         self::assertStringNotContainsString('Home &amp; Start', $markup);
@@ -133,6 +154,77 @@ final class PermissionFeedbackControllerTest extends AbstractFeedbackTestCase
         self::assertFileDoesNotExist($this->mailboxFile);
     }
 
+    #[Test]
+    public function formOffersScreenshotUnlessSwitchedOff(): void
+    {
+        self::assertStringContainsString('t3js-permission-feedback-screenshot-capture', $this->renderForm(self::PAGE_VIEW));
+
+        $this->configureExtension(['recipients' => 'admin@example.org', 'screenshot' => '0']);
+
+        self::assertStringNotContainsString('screenshot', $this->renderForm(self::PAGE_VIEW));
+    }
+
+    #[Test]
+    public function sendAttachesScreenshot(): void
+    {
+        $result = $this->send(self::PAGE_VIEW + ['message' => 'See the picture.'], $this->createUpload(self::PNG_IMAGE));
+
+        self::assertTrue($result['success']);
+        $mail = $this->readMail();
+        self::assertStringContainsString('Content-Type: image/png; name=screenshot.png', $mail);
+        self::assertStringContainsString('Content-Disposition: attachment; name=screenshot.png; filename=screenshot.png', $mail);
+        self::assertStringContainsString(substr(self::PNG_IMAGE, 0, 76), $mail);
+        self::assertStringContainsString('Screenshot: see attachment', $mail);
+    }
+
+    #[Test]
+    public function sendWithoutScreenshotDoesNotMentionOne(): void
+    {
+        $this->send(self::PAGE_VIEW + ['message' => 'No picture.']);
+
+        $mail = $this->readMail();
+        self::assertStringNotContainsString('Screenshot', $mail);
+        self::assertStringNotContainsString('Content-Disposition: attachment', $mail);
+    }
+
+    #[Test]
+    public function sendRejectsUploadThatIsNotAnImage(): void
+    {
+        $result = $this->send(self::PAGE_VIEW + ['message' => 'See the picture.'], $this->createUpload(base64_encode('<?php echo 1;')));
+
+        self::assertFalse($result['success']);
+        self::assertSame('The screenshot could not be used. Please attach a PNG or JPEG image of at most 5 MB.', $result['message']);
+        self::assertFileDoesNotExist($this->mailboxFile);
+    }
+
+    #[Test]
+    public function sendRejectsFailedUpload(): void
+    {
+        $result = $this->send(self::PAGE_VIEW + ['message' => 'See the picture.'], $this->createUpload(self::PNG_IMAGE, UPLOAD_ERR_INI_SIZE));
+
+        self::assertFalse($result['success']);
+        self::assertFileDoesNotExist($this->mailboxFile);
+    }
+
+    #[Test]
+    public function sendIgnoresScreenshotWhenSwitchedOff(): void
+    {
+        $this->configureExtension(['recipients' => 'admin@example.org', 'screenshot' => '0']);
+
+        $result = $this->send(self::PAGE_VIEW + ['message' => 'See the picture.'], $this->createUpload(self::PNG_IMAGE));
+
+        self::assertTrue($result['success']);
+        self::assertStringNotContainsString('Content-Disposition: attachment', $this->readMail());
+    }
+
+    private function createUpload(string $base64Contents, int $error = UPLOAD_ERR_OK): UploadedFile
+    {
+        $file = $this->instancePath . '/typo3temp/var/transient/upload-' . bin2hex(random_bytes(4));
+        file_put_contents($file, base64_decode($base64Contents));
+
+        return new UploadedFile($file, (int)filesize($file), $error, 'anything.bin', 'application/octet-stream');
+    }
+
     /**
      * @param array<string, string> $values
      */
@@ -147,9 +239,10 @@ final class PermissionFeedbackControllerTest extends AbstractFeedbackTestCase
      * @param array<string, string> $values
      * @return array{success: bool, title: string, message: string}
      */
-    private function send(array $values): array
+    private function send(array $values, ?UploadedFile $screenshot = null): array
     {
-        $response = $this->get(PermissionFeedbackController::class)->sendAction($this->createBackendRequest('POST', [], $values));
+        $uploadedFiles = $screenshot === null ? [] : ['screenshot' => $screenshot];
+        $response = $this->get(PermissionFeedbackController::class)->sendAction($this->createBackendRequest('POST', [], $values, $uploadedFiles));
         self::assertInstanceOf(ResponseInterface::class, $response);
 
         return json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);

@@ -30,6 +30,17 @@
             <trans-unit id="mail.folder"><source>Folder</source></trans-unit>
             <trans-unit id="mail.backend"><source>Backend</source></trans-unit>
             <trans-unit id="mail.frontend"><source>Frontend</source></trans-unit>
+            <trans-unit id="screenshot.label"><source>Screenshot (optional)</source></trans-unit>
+            <trans-unit id="screenshot.hint"><source>Show what you see: take a screenshot, choose an image or paste one from the clipboard.</source></trans-unit>
+            <trans-unit id="screenshot.capture"><source>Take screenshot</source></trans-unit>
+            <trans-unit id="screenshot.choose"><source>Choose image</source></trans-unit>
+            <trans-unit id="screenshot.remove"><source>Remove</source></trans-unit>
+            <trans-unit id="screenshot.previewAlternative"><source>Preview of the attached screenshot</source></trans-unit>
+            <trans-unit id="error.screenshotInvalid"><source>The screenshot could not be used. Please attach a PNG or JPEG image of at most 5 MB.</source></trans-unit>
+            <trans-unit id="error.screenshotCapture"><source>The screenshot could not be taken. You can choose an image or paste one from the clipboard instead.</source></trans-unit>
+            <trans-unit id="error.screenshotUnreadable"><source>This file is not an image that can be attached.</source></trans-unit>
+            <trans-unit id="mail.screenshot"><source>Screenshot</source></trans-unit>
+            <trans-unit id="mail.screenshotAttached"><source>see attachment</source></trans-unit>
         </body>
     </file>
 </xliff>

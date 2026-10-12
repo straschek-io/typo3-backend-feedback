@@ -47,6 +47,19 @@ final class ExtensionSettingsTest extends TestCase
     }
 
     #[Test]
+    public function screenshotIsEnabledUnlessSwitchedOff(): void
+    {
+        $settings = new ExtensionSettings();
+        self::assertTrue($settings->isScreenshotEnabled());
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['backend_feedback']['screenshot'] = '1';
+        self::assertTrue($settings->isScreenshotEnabled());
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['backend_feedback']['screenshot'] = '0';
+        self::assertFalse($settings->isScreenshotEnabled());
+    }
+
+    #[Test]
     public function configurationChangedAfterConstructionIsRead(): void
     {
         $settings = new ExtensionSettings();

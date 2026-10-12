@@ -43,7 +43,7 @@ final class FeedbackMailer
         return $recipients;
     }
 
-    public function send(ServerRequestInterface $request, BackendUserAuthentication $reporter, FeedbackContext $context, string $message): void
+    public function send(ServerRequestInterface $request, BackendUserAuthentication $reporter, FeedbackContext $context, string $message, ?FeedbackScreenshot $screenshot = null): void
     {
         $reporterName = trim((string)($reporter->user['realName'] ?? '')) ?: (string)$reporter->user['username'];
         $reporterEmail = (string)($reporter->user['email'] ?? '');
@@ -65,10 +65,14 @@ final class FeedbackMailer
                 'reporterGroups' => implode(', ', array_column($reporter->userGroups, 'title')),
                 'context' => $context,
                 'message' => $message,
+                'hasScreenshot' => $screenshot !== null,
                 'sentAt' => new \DateTimeImmutable(),
                 'languageCode' => $languageService->getLocale()?->getLanguageCode() ?: 'en',
                 'styles' => file_get_contents(GeneralUtility::getFileAbsFileName(self::MAIL_CSS_FILE)) ?: '',
             ]);
+        if ($screenshot !== null) {
+            $email->attach($screenshot->contents, $screenshot->fileName, $screenshot->mimeType);
+        }
         if (GeneralUtility::validEmail($reporterEmail)) {
             $email->replyTo(new Address($reporterEmail, $reporterName));
         }

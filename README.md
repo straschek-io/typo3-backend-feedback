@@ -32,6 +32,7 @@ Extension configuration (Admin Tools > Settings > Extension Configuration >
 | `recipients` | empty | Comma separated mail addresses that receive the feedback. Without valid recipients the form shows a notice and nothing is sent. |
 | `toolbarLabel` | empty | Text of the toolbar button and title of the modal. Empty uses the translated default "Report missing permission". |
 | `subjectPrefix` | empty | Start of the mail subject. Empty uses the translated default "[TYPO3 permissions]". |
+| `screenshot` | on | Lets users attach a screenshot or another image to the feedback. |
 
 A custom `toolbarLabel` or `subjectPrefix` is used as written for every
 backend language; the defaults are translated (English and German).
@@ -61,12 +62,38 @@ items) opens a medium sized modal titled like the button:
 - a read-only summary of that view: module, page with title and uid or file
   folder, and the link to the view
 - one required text field "What is missing?" with an example as placeholder
+- optionally a screenshot, see below
 - the buttons "Cancel" and "Send"
 
 After sending, the modal closes and a notification confirms that the
 administrators have been informed. If the message is empty, no recipients are
 configured or the mail cannot be sent, the modal stays open and a notification
 says why.
+
+## Screenshots
+
+Often the quickest way to say what is missing is to show it. Below the text
+field the form offers three ways to attach one picture:
+
+- **Take screenshot** asks the browser to record the screen. The modal hides
+  itself while the browser takes the picture, so it shows the view behind it.
+  Chrome and Edge suggest the current tab; Firefox and Safari let the user pick
+  a window or screen. The button only appears where the browser offers screen
+  capture and the backend runs over HTTPS (or on localhost), which excludes
+  phones and tablets. On macOS the browser needs the system permission
+  "Screen Recording" once.
+- **Choose image** opens the file dialog for a PNG or JPEG file.
+- **Paste** an image from the clipboard while the form is open.
+
+A preview shows what will be sent and a button removes it again. Nothing is
+recorded or uploaded before the user presses "Send". Pictures wider than
+1920 pixels are scaled down in the browser and large ones are converted to
+JPEG, so uploads stay well below common PHP upload limits; the server accepts
+PNG and JPEG up to 5 MB and rejects everything else.
+
+Screenshots can show personal or confidential data and reach every configured
+recipient by mail. Switch the feature off with the `screenshot` setting if
+that is not wanted.
 
 ## The mail
 
@@ -79,6 +106,7 @@ user has a valid mail address):
 - module, page (title, uid, rootline path) or file folder
 - a deep link to the exact backend view, without the session bound token, and
   the frontend URL of the page
+- the screenshot as attachment, if the reporter added one
 
 The mail is written in the backend language of the reporter.
 
@@ -87,13 +115,17 @@ The mail is written in the backend language of the reporter.
 - `Classes/Backend/ToolbarItems/PermissionFeedbackToolbarItem.php`: the toolbar
   button, loads `permission-feedback.js`
 - `Resources/Public/JavaScript/permission-feedback.js`: collects module,
-  content frame URL, page and folder, opens the modal and posts the form
+  content frame URL, page and folder, opens the modal, takes the screenshot
+  and posts the form
 - `Configuration/Backend/AjaxRoutes.php`: `permission_feedback_form` (form)
   and `permission_feedback_send` (dispatch)
 - `Classes/Service/FeedbackContextResolver.php`: resolves module, page, folder
   and links
 - `Classes/Service/FeedbackMailer.php`: FluidEmail, with the styles from
   `Resources/Private/Css/` embedded
+- `Classes/Service/FeedbackScreenshot.php`: validates the uploaded picture
+- `Resources/Public/Css/permission-feedback.css`: styles of the screenshot
+  part of the form
 - `Classes/Configuration/ExtensionSettings.php`: the extension configuration
 
 The mail templates are registered in `MAIL/templateRootPaths` and

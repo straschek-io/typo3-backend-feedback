@@ -25,6 +25,9 @@
             <tr><th><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.folder"/></th><td>{context.fileIdentifier}</td></tr>
         </f:if>
         <tr><th><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.backend"/></th><td><a href="{context.backendUrl}">{context.backendUrl}</a></td></tr>
+        <f:if condition="{hasScreenshot}">
+            <tr><th><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.screenshot"/></th><td><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.screenshotAttached"/></td></tr>
+        </f:if>
         <f:if condition="{context.frontendUrl}">
             <tr><th><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.frontend"/></th><td><a href="{context.frontendUrl}">{context.frontendUrl}</a></td></tr>
         </f:if>

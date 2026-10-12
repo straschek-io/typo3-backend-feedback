@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 final class PermissionFeedbackToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
     private const LANGUAGE_FILE = 'EXT:backend_feedback/Resources/Private/Language/locallang.xlf';
+    private const STYLESHEET_FILE = 'EXT:backend_feedback/Resources/Public/Css/permission-feedback.css';
 
     private ServerRequestInterface $request;
 
@@ -41,6 +42,7 @@ final class PermissionFeedbackToolbarItem implements ToolbarItemInterface, Reque
     public function getItem(): string
     {
         $this->pageRenderer->addInlineLanguageLabelFile(self::LANGUAGE_FILE);
+        $this->pageRenderer->addCssFile(self::STYLESHEET_FILE);
         $languageService = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
         $label = $this->settings->getToolbarLabel();
         $view = $this->backendViewFactory->create($this->request, ['straschek-io/typo3-backend-feedback']);
