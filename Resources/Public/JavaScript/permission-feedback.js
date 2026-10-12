@@ -22,6 +22,7 @@ class PermissionFeedback {
 
   /**
    * The exact view comes from the content frame, page and folder from the module state.
+   * The folder state is stored as "file" in TYPO3 13 and as "media" from TYPO3 14 on.
    */
   collectContext() {
     const router = document.querySelector('typo3-backend-module-router');
@@ -40,7 +41,7 @@ class PermissionFeedback {
       module: router?.getAttribute('module') ?? '',
       endpoint: endpoint,
       pageId: ModuleStateStorage.current('web').identifier ?? '',
-      fileIdentifier: ModuleStateStorage.current('file').identifier ?? '',
+      fileIdentifier: (ModuleStateStorage.current('file').identifier || ModuleStateStorage.current('media').identifier) ?? '',
     };
   }
 

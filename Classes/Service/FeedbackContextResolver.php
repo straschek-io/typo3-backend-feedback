@@ -18,6 +18,11 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 final class FeedbackContextResolver
 {
+    /**
+     * Main module of the file list in TYPO3 13, alias of it or of its main module from TYPO3 14 on.
+     */
+    private const FILE_MODULE_IDENTIFIER = 'file';
+
     public function __construct(
         private readonly ModuleProvider $moduleProvider,
         private readonly UriBuilder $uriBuilder,
@@ -60,12 +65,16 @@ final class FeedbackContextResolver
 
     private function isFileModule(string $moduleIdentifier): bool
     {
-        if ($moduleIdentifier === '' || !$this->moduleProvider->isModuleRegistered($moduleIdentifier)) {
+        if ($moduleIdentifier === ''
+            || !$this->moduleProvider->isModuleRegistered($moduleIdentifier)
+            || !$this->moduleProvider->isModuleRegistered(self::FILE_MODULE_IDENTIFIER)
+        ) {
             return false;
         }
         $module = $this->moduleProvider->getModule($moduleIdentifier);
+        $fileModuleIdentifier = $this->moduleProvider->getModule(self::FILE_MODULE_IDENTIFIER)?->getIdentifier();
 
-        return $module->getIdentifier() === 'file' || $module->getParentIdentifier() === 'file';
+        return $module?->getIdentifier() === $fileModuleIdentifier || $module?->getParentIdentifier() === $fileModuleIdentifier;
     }
 
     private function resolveModuleTitle(string $moduleIdentifier): string

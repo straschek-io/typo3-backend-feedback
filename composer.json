@@ -16,14 +16,18 @@
     },
     "require": {
         "php": "^8.2",
-        "typo3/cms-backend": "^13.4",
-        "typo3/cms-core": "^13.4",
-        "typo3/cms-fluid": "^13.4"
+        "typo3/cms-backend": "^13.4 || ^14.3",
+        "typo3/cms-core": "^13.4 || ^14.3",
+        "typo3/cms-fluid": "^13.4 || ^14.3"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^11.5",
-        "typo3/coding-standards": "^0.9"
+        "typo3/cms-filelist": "^13.4 || ^14.3",
+        "typo3/cms-install": "^13.4 || ^14.3",
+        "typo3/cms-setup": "^13.4 || ^14.3",
+        "typo3/coding-standards": "^0.9",
+        "typo3/testing-framework": "^9.2"
     },
     "autoload": {
         "psr-4": {
@@ -44,7 +48,11 @@
     },
     "extra": {
         "typo3/cms": {
-            "extension-key": "backend_feedback"
+            "extension-key": "backend_feedback",
+            "version": "1.1.0",
+            "Package": {
+                "providesPackages": {}
+            }
         }
     },
     "scripts": {
@@ -53,10 +61,12 @@
             "@ci:yaml:lint",
             "@ci:php:cs",
             "@ci:php:stan",
-            "@ci:php:unit"
+            "@ci:php:unit",
+            "@ci:php:functional"
         ],
         "ci:composer:validate": "@composer validate --strict",
         "ci:php:cs": "php-cs-fixer fix --dry-run --diff",
+        "ci:php:functional": "phpunit -c Build/FunctionalTests.xml",
         "ci:php:stan": "phpstan analyse --no-progress",
         "ci:php:unit": "phpunit",
         "ci:yaml:lint": "yaml-lint Configuration",
