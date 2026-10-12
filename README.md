@@ -112,19 +112,19 @@ The mail is written in the backend language of the reporter.
 
 ## Structure
 
-- `Classes/Backend/ToolbarItems/PermissionFeedbackToolbarItem.php`: the toolbar
-  button, loads `permission-feedback.js`
-- `Resources/Public/JavaScript/permission-feedback.js`: collects module,
+- `Classes/Backend/ToolbarItems/BackendFeedbackToolbarItem.php`: the toolbar
+  button, loads `backend-feedback.js`
+- `Resources/Public/JavaScript/backend-feedback.js`: collects module,
   content frame URL, page and folder, opens the modal, takes the screenshot
   and posts the form
-- `Configuration/Backend/AjaxRoutes.php`: `permission_feedback_form` (form)
-  and `permission_feedback_send` (dispatch)
+- `Configuration/Backend/AjaxRoutes.php`: `backend_feedback_form` (form)
+  and `backend_feedback_send` (dispatch)
 - `Classes/Service/FeedbackContextResolver.php`: resolves module, page, folder
   and links
 - `Classes/Service/FeedbackMailer.php`: FluidEmail, with the styles from
   `Resources/Private/Css/` embedded
 - `Classes/Service/FeedbackScreenshot.php`: validates the uploaded picture
-- `Resources/Public/Css/permission-feedback.css`: styles of the screenshot
+- `Resources/Public/Css/backend-feedback.css`: styles of the screenshot
   part of the form
 - `Classes/Configuration/ExtensionSettings.php`: the extension configuration
 

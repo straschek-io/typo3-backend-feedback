@@ -1,20 +1,20 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:if condition="!{recipientsConfigured}">
-    <div class="alert alert-warning permission-feedback-form__warning">
+    <div class="alert alert-warning backend-feedback-form__warning">
         <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:error.noRecipients"/>
     </div>
 </f:if>
-<form class="permission-feedback-form t3js-permission-feedback-form" action="#" method="post">
+<form class="backend-feedback-form t3js-backend-feedback-form" action="#" method="post">
     <input type="hidden" name="module" value="{values.module}">
     <input type="hidden" name="pageId" value="{values.pageId}">
     <input type="hidden" name="endpoint" value="{values.endpoint}">
     <input type="hidden" name="fileIdentifier" value="{values.fileIdentifier}">
 
-    <p class="permission-feedback-form__intro">
+    <p class="backend-feedback-form__intro">
         <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:form.intro"/>
     </p>
 
-    <dl class="permission-feedback-form__context">
+    <dl class="backend-feedback-form__context">
         <f:if condition="{context.moduleTitle}">
             <dt><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:context.module"/></dt>
             <dd>{context.moduleTitle}</dd>
@@ -28,38 +28,38 @@
             <dd>{context.fileIdentifier}</dd>
         </f:if>
         <dt><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:context.link"/></dt>
-        <dd class="permission-feedback-form__link">{context.backendUrl}</dd>
+        <dd class="backend-feedback-form__link">{context.backendUrl}</dd>
     </dl>
 
     <div class="form-group">
-        <label for="permission-feedback-message" class="form-label">
+        <label for="backend-feedback-message" class="form-label">
             <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:form.message"/>
         </label>
-        <textarea id="permission-feedback-message" name="message" class="form-control" rows="6" required="required" autofocus="autofocus"
+        <textarea id="backend-feedback-message" name="message" class="form-control" rows="6" required="required" autofocus="autofocus"
             placeholder="{f:translate(key: 'LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:form.messagePlaceholder')}"></textarea>
     </div>
 
     <f:if condition="{screenshotEnabled}">
-        <div class="form-group permission-feedback-form__screenshot">
+        <div class="form-group backend-feedback-form__screenshot">
             <span class="form-label"><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:screenshot.label"/></span>
-            <p class="permission-feedback-form__screenshot-hint">
+            <p class="backend-feedback-form__screenshot-hint">
                 <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:screenshot.hint"/>
             </p>
-            <div class="permission-feedback-form__screenshot-actions">
-                <button type="button" class="btn btn-default t3js-permission-feedback-screenshot-capture" hidden="hidden">
+            <div class="backend-feedback-form__screenshot-actions">
+                <button type="button" class="btn btn-default t3js-backend-feedback-screenshot-capture" hidden="hidden">
                     <core:icon identifier="actions-image" size="small"/>
                     <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:screenshot.capture"/>
                 </button>
-                <label class="btn btn-default permission-feedback-form__screenshot-choose">
+                <label class="btn btn-default backend-feedback-form__screenshot-choose">
                     <core:icon identifier="actions-upload" size="small"/>
                     <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:screenshot.choose"/>
-                    <input type="file" class="visually-hidden t3js-permission-feedback-screenshot-file" accept="image/png,image/jpeg">
+                    <input type="file" class="visually-hidden t3js-backend-feedback-screenshot-file" accept="image/png,image/jpeg">
                 </label>
             </div>
-            <figure class="permission-feedback-form__screenshot-preview t3js-permission-feedback-screenshot-preview" hidden="hidden">
-                <img class="permission-feedback-form__screenshot-image t3js-permission-feedback-screenshot-image" src="data:," alt="{f:translate(key: 'LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:screenshot.previewAlternative')}">
-                <figcaption class="permission-feedback-form__screenshot-caption">
-                    <button type="button" class="btn btn-default btn-sm t3js-permission-feedback-screenshot-remove">
+            <figure class="backend-feedback-form__screenshot-preview t3js-backend-feedback-screenshot-preview" hidden="hidden">
+                <img class="backend-feedback-form__screenshot-image t3js-backend-feedback-screenshot-image" src="data:," alt="{f:translate(key: 'LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:screenshot.previewAlternative')}">
+                <figcaption class="backend-feedback-form__screenshot-caption">
+                    <button type="button" class="btn btn-default btn-sm t3js-backend-feedback-screenshot-remove">
                         <core:icon identifier="actions-delete" size="small"/>
                         <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:screenshot.remove"/>
                     </button>

@@ -1,16 +1,16 @@
 <?php
 
-use StraschekIo\BackendFeedback\Controller\PermissionFeedbackController;
+use StraschekIo\BackendFeedback\Controller\BackendFeedbackController;
 
 return [
-    'permission_feedback_form' => [
-        'path' => '/permission-feedback/form',
+    'backend_feedback_form' => [
+        'path' => '/backend-feedback/form',
         'methods' => ['GET'],
-        'target' => PermissionFeedbackController::class . '::formAction',
+        'target' => BackendFeedbackController::class . '::formAction',
     ],
-    'permission_feedback_send' => [
-        'path' => '/permission-feedback/send',
+    'backend_feedback_send' => [
+        'path' => '/backend-feedback/send',
         'methods' => ['POST'],
-        'target' => PermissionFeedbackController::class . '::sendAction',
+        'target' => BackendFeedbackController::class . '::sendAction',
     ],
 ];

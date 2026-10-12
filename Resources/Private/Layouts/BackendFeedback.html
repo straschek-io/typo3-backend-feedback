@@ -7,10 +7,10 @@
     <title><f:render section="Title"/></title>
     <style type="text/css">{styles -> f:format.raw()}</style>
 </head>
-<body class="permission-feedback-mail">
-    <div class="permission-feedback-mail__container">
+<body class="backend-feedback-mail">
+    <div class="backend-feedback-mail__container">
         <f:render section="Main"/>
-        <p class="permission-feedback-mail__footer">{typo3.sitename}, {normalizedParams.siteUrl}</p>
+        <p class="backend-feedback-mail__footer">{typo3.sitename}, {normalizedParams.siteUrl}</p>
     </div>
 </body>
 </html>

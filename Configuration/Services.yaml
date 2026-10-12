@@ -7,5 +7,5 @@ services:
   StraschekIo\BackendFeedback\:
     resource: '../Classes/*'
 
-  StraschekIo\BackendFeedback\Controller\PermissionFeedbackController:
+  StraschekIo\BackendFeedback\Controller\BackendFeedbackController:
     public: true

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace StraschekIo\BackendFeedback\Tests\Functional\Backend\ToolbarItems;
 
 use PHPUnit\Framework\Attributes\Test;
-use StraschekIo\BackendFeedback\Backend\ToolbarItems\PermissionFeedbackToolbarItem;
+use StraschekIo\BackendFeedback\Backend\ToolbarItems\BackendFeedbackToolbarItem;
 use StraschekIo\BackendFeedback\Tests\Functional\AbstractFeedbackTestCase;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemsRegistry;
 
-final class PermissionFeedbackToolbarItemTest extends AbstractFeedbackTestCase
+final class BackendFeedbackToolbarItemTest extends AbstractFeedbackTestCase
 {
     #[Test]
     public function toolbarItemIsRegistered(): void
@@ -19,7 +19,7 @@ final class PermissionFeedbackToolbarItemTest extends AbstractFeedbackTestCase
             $classNames[] = $toolbarItem::class;
         }
 
-        self::assertContains(PermissionFeedbackToolbarItem::class, $classNames);
+        self::assertContains(BackendFeedbackToolbarItem::class, $classNames);
     }
 
     #[Test]
@@ -27,7 +27,7 @@ final class PermissionFeedbackToolbarItemTest extends AbstractFeedbackTestCase
     {
         $markup = $this->renderToolbarItem();
 
-        self::assertStringContainsString('t3js-permission-feedback-open', $markup);
+        self::assertStringContainsString('t3js-backend-feedback-open', $markup);
         self::assertStringContainsString('title="Report missing permission"', $markup);
         self::assertStringContainsString('data-modal-title="Report missing permission"', $markup);
         self::assertStringContainsString('<span class="toolbar-item-title">Report missing permission</span>', $markup);
@@ -47,7 +47,7 @@ final class PermissionFeedbackToolbarItemTest extends AbstractFeedbackTestCase
 
     private function renderToolbarItem(): string
     {
-        $toolbarItem = $this->get(PermissionFeedbackToolbarItem::class);
+        $toolbarItem = $this->get(BackendFeedbackToolbarItem::class);
         $toolbarItem->setRequest($this->createBackendRequest());
 
         return $toolbarItem->getItem();

@@ -6,11 +6,11 @@ namespace StraschekIo\BackendFeedback\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
-use StraschekIo\BackendFeedback\Controller\PermissionFeedbackController;
+use StraschekIo\BackendFeedback\Controller\BackendFeedbackController;
 use StraschekIo\BackendFeedback\Tests\Functional\AbstractFeedbackTestCase;
 use TYPO3\CMS\Core\Http\UploadedFile;
 
-final class PermissionFeedbackControllerTest extends AbstractFeedbackTestCase
+final class BackendFeedbackControllerTest extends AbstractFeedbackTestCase
 {
     private const PAGE_VIEW = [
         'module' => 'web_layout',
@@ -48,8 +48,8 @@ final class PermissionFeedbackControllerTest extends AbstractFeedbackTestCase
         $markup = $this->renderForm(self::PAGE_VIEW);
 
         self::assertStringContainsString('Home &amp; Start [1]', $markup);
-        self::assertStringContainsString('<dd class="permission-feedback-form__link">https://example.org/typo3/module/web/layout?id=1&amp;language=0</dd>', $markup);
-        self::assertStringNotContainsString('permission-feedback-form__warning', $markup);
+        self::assertStringContainsString('<dd class="backend-feedback-form__link">https://example.org/typo3/module/web/layout?id=1&amp;language=0</dd>', $markup);
+        self::assertStringNotContainsString('backend-feedback-form__warning', $markup);
         self::assertStringContainsString('name="message"', $markup);
     }
 
@@ -85,7 +85,7 @@ final class PermissionFeedbackControllerTest extends AbstractFeedbackTestCase
     {
         $this->configureExtension(['recipients' => '']);
 
-        self::assertStringContainsString('permission-feedback-form__warning', $this->renderForm(self::PAGE_VIEW));
+        self::assertStringContainsString('backend-feedback-form__warning', $this->renderForm(self::PAGE_VIEW));
     }
 
     #[Test]
@@ -105,8 +105,8 @@ final class PermissionFeedbackControllerTest extends AbstractFeedbackTestCase
         self::assertStringContainsString('No content & files here.', $mail);
         self::assertStringContainsString('Page: Home & Start [1]', $mail);
         self::assertStringContainsString('Backend: https://example.org/typo3/module/web/layout?id=1&language=0', $mail);
-        self::assertStringContainsString('<blockquote class="permission-feedback-mail__message">No content &amp; files here.<br />', $mail);
-        self::assertStringContainsString('.permission-feedback-mail__container', $mail);
+        self::assertStringContainsString('<blockquote class="backend-feedback-mail__message">No content &amp; files here.<br />', $mail);
+        self::assertStringContainsString('.backend-feedback-mail__container', $mail);
         self::assertStringContainsString('<html lang="en">', $mail);
         self::assertStringNotContainsString('token', $mail);
         self::assertStringNotContainsString(' style=', $mail);
@@ -157,7 +157,7 @@ final class PermissionFeedbackControllerTest extends AbstractFeedbackTestCase
     #[Test]
     public function formOffersScreenshotUnlessSwitchedOff(): void
     {
-        self::assertStringContainsString('t3js-permission-feedback-screenshot-capture', $this->renderForm(self::PAGE_VIEW));
+        self::assertStringContainsString('t3js-backend-feedback-screenshot-capture', $this->renderForm(self::PAGE_VIEW));
 
         $this->configureExtension(['recipients' => 'admin@example.org', 'screenshot' => '0']);
 
@@ -230,7 +230,7 @@ final class PermissionFeedbackControllerTest extends AbstractFeedbackTestCase
      */
     private function renderForm(array $values): string
     {
-        $response = $this->get(PermissionFeedbackController::class)->formAction($this->createBackendRequest('GET', $values));
+        $response = $this->get(BackendFeedbackController::class)->formAction($this->createBackendRequest('GET', $values));
 
         return (string)$response->getBody();
     }
@@ -242,7 +242,7 @@ final class PermissionFeedbackControllerTest extends AbstractFeedbackTestCase
     private function send(array $values, ?UploadedFile $screenshot = null): array
     {
         $uploadedFiles = $screenshot === null ? [] : ['screenshot' => $screenshot];
-        $response = $this->get(PermissionFeedbackController::class)->sendAction($this->createBackendRequest('POST', [], $values, $uploadedFiles));
+        $response = $this->get(BackendFeedbackController::class)->sendAction($this->createBackendRequest('POST', [], $values, $uploadedFiles));
         self::assertInstanceOf(ResponseInterface::class, $response);
 
         return json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);

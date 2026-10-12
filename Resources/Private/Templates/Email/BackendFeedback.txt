@@ -1,4 +1,4 @@
-<f:layout name="PermissionFeedback"/>
+<f:layout name="BackendFeedback"/>
 
 <f:section name="Title"><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.title"/></f:section>
 

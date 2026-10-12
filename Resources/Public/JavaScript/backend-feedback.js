@@ -7,12 +7,12 @@ import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage.
 
 const SCREENSHOT_MAXIMUM_WIDTH = 1920;
 const SCREENSHOT_PNG_MAXIMUM_SIZE = 1500000;
-const CAPTURING_CLASS = 'permission-feedback-capturing';
+const CAPTURING_CLASS = 'backend-feedback-capturing';
 
 /**
  * Opens the feedback form in a modal and posts it to the backend.
  */
-class PermissionFeedback {
+class BackendFeedback {
   constructor() {
     this.modal = null;
     this.screenshot = null;
@@ -23,25 +23,25 @@ class PermissionFeedback {
     new RegularEvent('click', (event, target) => {
       event.preventDefault();
       this.openModal(target.dataset.modalTitle);
-    }).delegateTo(document, '.t3js-permission-feedback-open');
+    }).delegateTo(document, '.t3js-backend-feedback-open');
 
     new RegularEvent('click', () => this.captureScreenshot())
-      .delegateTo(document, '.t3js-permission-feedback-screenshot-capture');
+      .delegateTo(document, '.t3js-backend-feedback-screenshot-capture');
     new RegularEvent('click', () => this.setScreenshot(null))
-      .delegateTo(document, '.t3js-permission-feedback-screenshot-remove');
+      .delegateTo(document, '.t3js-backend-feedback-screenshot-remove');
     new RegularEvent('change', (event, target) => {
       if (target.files.length > 0) {
         this.useImage(target.files[0]);
       }
       target.value = '';
-    }).delegateTo(document, '.t3js-permission-feedback-screenshot-file');
+    }).delegateTo(document, '.t3js-backend-feedback-screenshot-file');
     new RegularEvent('paste', (event) => {
       const image = Array.from(event.clipboardData?.files ?? []).find((file) => file.type.startsWith('image/'));
       if (image && this.isScreenshotEnabled()) {
         event.preventDefault();
         this.useImage(image);
       }
-    }).delegateTo(document, '.t3js-permission-feedback-form');
+    }).delegateTo(document, '.t3js-backend-feedback-form');
   }
 
   /**
@@ -70,7 +70,7 @@ class PermissionFeedback {
   }
 
   openModal(title) {
-    const url = new URL(TYPO3.settings.ajaxUrls.permission_feedback_form, window.location.origin);
+    const url = new URL(TYPO3.settings.ajaxUrls.backend_feedback_form, window.location.origin);
     for (const [name, value] of Object.entries(this.collectContext())) {
       url.searchParams.set(name, value);
     }
@@ -101,14 +101,14 @@ class PermissionFeedback {
    * Capturing needs a browser that offers it and a secure context.
    */
   initializeScreenshot(modal) {
-    const captureButton = modal.querySelector('.t3js-permission-feedback-screenshot-capture');
+    const captureButton = modal.querySelector('.t3js-backend-feedback-screenshot-capture');
     if (captureButton && window.isSecureContext && typeof navigator.mediaDevices?.getDisplayMedia === 'function') {
       captureButton.hidden = false;
     }
   }
 
   isScreenshotEnabled() {
-    return this.modal?.querySelector('.t3js-permission-feedback-screenshot-preview') != null;
+    return this.modal?.querySelector('.t3js-backend-feedback-screenshot-preview') != null;
   }
 
   /**
@@ -168,7 +168,7 @@ class PermissionFeedback {
 
   setScreenshot(screenshot) {
     this.screenshot = screenshot;
-    const preview = this.modal?.querySelector('.t3js-permission-feedback-screenshot-preview');
+    const preview = this.modal?.querySelector('.t3js-backend-feedback-screenshot-preview');
     if (!preview) {
       return;
     }
@@ -178,14 +178,14 @@ class PermissionFeedback {
     }
     const reader = new FileReader();
     reader.addEventListener('load', () => {
-      preview.querySelector('.t3js-permission-feedback-screenshot-image').src = reader.result;
+      preview.querySelector('.t3js-backend-feedback-screenshot-image').src = reader.result;
       preview.hidden = false;
     });
     reader.readAsDataURL(screenshot);
   }
 
   async send(modal) {
-    const form = modal.querySelector('.t3js-permission-feedback-form');
+    const form = modal.querySelector('.t3js-backend-feedback-form');
     if (!form || !form.reportValidity()) {
       return;
     }
@@ -195,7 +195,7 @@ class PermissionFeedback {
     }
 
     try {
-      const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.permission_feedback_send).post(formData);
+      const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.backend_feedback_send).post(formData);
       const result = await response.resolve();
       if (result.success) {
         Notification.success(result.title, result.message);
@@ -209,4 +209,4 @@ class PermissionFeedback {
   }
 }
 
-export default new PermissionFeedback();
+export default new BackendFeedback();

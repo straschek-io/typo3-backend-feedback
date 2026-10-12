@@ -13,12 +13,12 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 
 /**
- * Toolbar button that opens the permission feedback form in every backend view.
+ * Toolbar button that opens the feedback form in every backend view.
  */
-final class PermissionFeedbackToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
+final class BackendFeedbackToolbarItem implements ToolbarItemInterface, RequestAwareToolbarItemInterface
 {
     private const LANGUAGE_FILE = 'EXT:backend_feedback/Resources/Private/Language/locallang.xlf';
-    private const STYLESHEET_FILE = 'EXT:backend_feedback/Resources/Public/Css/permission-feedback.css';
+    private const STYLESHEET_FILE = 'EXT:backend_feedback/Resources/Public/Css/backend-feedback.css';
 
     private ServerRequestInterface $request;
 
@@ -51,7 +51,7 @@ final class PermissionFeedbackToolbarItem implements ToolbarItemInterface, Reque
             'modalTitle' => $label ?: $languageService->sL('LLL:' . self::LANGUAGE_FILE . ':modal.title'),
         ]);
 
-        return $view->render('ToolbarItems/PermissionFeedbackToolbarItem');
+        return $view->render('ToolbarItems/BackendFeedbackToolbarItem');
     }
 
     public function hasDropDown(): bool

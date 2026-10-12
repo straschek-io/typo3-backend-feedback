@@ -1,0 +1,36 @@
+.backend-feedback-form__screenshot-hint {
+    margin: 0 0 8px;
+}
+
+.backend-feedback-form__screenshot-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.backend-feedback-form__screenshot-choose {
+    margin: 0;
+}
+
+.backend-feedback-form__screenshot-preview {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 12px 0 0;
+}
+
+.backend-feedback-form__screenshot-preview[hidden] {
+    display: none;
+}
+
+.backend-feedback-form__screenshot-image {
+    max-width: 60%;
+    max-height: 220px;
+    border: 1px solid var(--typo3-component-border-color, #bbbbbb);
+    border-radius: 4px;
+}
+
+.backend-feedback-capturing typo3-backend-modal,
+.backend-feedback-capturing .modal-backdrop {
+    display: none;
+}

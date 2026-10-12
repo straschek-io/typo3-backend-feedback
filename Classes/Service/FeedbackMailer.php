@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\MailUtility;
  */
 final class FeedbackMailer
 {
-    private const MAIL_CSS_FILE = 'EXT:backend_feedback/Resources/Private/Css/permission-feedback-mail.css';
+    private const MAIL_CSS_FILE = 'EXT:backend_feedback/Resources/Private/Css/backend-feedback-mail.css';
     private const LANGUAGE_FILE = 'LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:';
 
     public function __construct(
@@ -57,7 +57,7 @@ final class FeedbackMailer
             ->from(new Address(MailUtility::getSystemFromAddress(), MailUtility::getSystemFromName() ?? ''))
             ->subject(sprintf('%s %s: %s', $subjectPrefix, $reporterName, $this->summarize($message)))
             ->format(FluidEmail::FORMAT_BOTH)
-            ->setTemplate('PermissionFeedback')
+            ->setTemplate('BackendFeedback')
             ->assignMultiple([
                 'reporterName' => $reporterName,
                 'reporterUsername' => (string)$reporter->user['username'],

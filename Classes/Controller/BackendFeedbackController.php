@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 /**
  * Renders the feedback form for the modal and sends the mail.
  */
-final class PermissionFeedbackController
+final class BackendFeedbackController
 {
     private const LANGUAGE_FILE = 'LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:';
 
@@ -56,7 +56,7 @@ final class PermissionFeedbackController
             return $this->jsonError('error.messageMissing');
         }
         if ($this->mailer->getRecipients() === []) {
-            $this->logger->error('Permission feedback not sent: no recipients configured in TYPO3_CONF_VARS/EXTENSIONS/backend_feedback/recipients');
+            $this->logger->error('Backend feedback not sent: no recipients configured in TYPO3_CONF_VARS/EXTENSIONS/backend_feedback/recipients');
 
             return $this->jsonError('error.noRecipients');
         }
@@ -64,7 +64,7 @@ final class PermissionFeedbackController
         try {
             $screenshot = $this->resolveScreenshot($request);
         } catch (\InvalidArgumentException $exception) {
-            $this->logger->notice('Permission feedback screenshot rejected: {message}', ['message' => $exception->getMessage()]);
+            $this->logger->notice('Backend feedback screenshot rejected: {message}', ['message' => $exception->getMessage()]);
 
             return $this->jsonError('error.screenshotInvalid');
         }
@@ -73,7 +73,7 @@ final class PermissionFeedbackController
             $context = $this->contextResolver->resolve($request, $body);
             $this->mailer->send($request, $GLOBALS['BE_USER'], $context, $message, $screenshot);
         } catch (\Throwable $exception) {
-            $this->logger->error('Permission feedback mail failed: {message}', ['message' => $exception->getMessage(), 'exception' => $exception]);
+            $this->logger->error('Backend feedback mail failed: {message}', ['message' => $exception->getMessage(), 'exception' => $exception]);
 
             return $this->jsonError('error.sendFailed');
         }
