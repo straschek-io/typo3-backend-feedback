@@ -1,0 +1,42 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="!{recipientsConfigured}">
+    <div class="alert alert-warning permission-feedback-form__warning">
+        <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:error.noRecipients"/>
+    </div>
+</f:if>
+<form class="permission-feedback-form t3js-permission-feedback-form" action="#" method="post">
+    <input type="hidden" name="module" value="{values.module}">
+    <input type="hidden" name="pageId" value="{values.pageId}">
+    <input type="hidden" name="endpoint" value="{values.endpoint}">
+    <input type="hidden" name="fileIdentifier" value="{values.fileIdentifier}">
+
+    <p class="permission-feedback-form__intro">
+        <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:form.intro"/>
+    </p>
+
+    <dl class="permission-feedback-form__context">
+        <f:if condition="{context.moduleTitle}">
+            <dt><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:context.module"/></dt>
+            <dd>{context.moduleTitle}</dd>
+        </f:if>
+        <f:if condition="{context.pageId}">
+            <dt><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:context.page"/></dt>
+            <dd>{context.pageTitle} [{context.pageId}]</dd>
+        </f:if>
+        <f:if condition="{context.fileIdentifier}">
+            <dt><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:context.folder"/></dt>
+            <dd>{context.fileIdentifier}</dd>
+        </f:if>
+        <dt><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:context.link"/></dt>
+        <dd class="permission-feedback-form__link">{context.backendUrl}</dd>
+    </dl>
+
+    <div class="form-group">
+        <label for="permission-feedback-message" class="form-label">
+            <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:form.message"/>
+        </label>
+        <textarea id="permission-feedback-message" name="message" class="form-control" rows="6" required="required" autofocus="autofocus"
+            placeholder="{f:translate(key: 'LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:form.messagePlaceholder')}"></textarea>
+    </div>
+</form>
+</html>

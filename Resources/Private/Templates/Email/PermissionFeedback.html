@@ -1,0 +1,33 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="PermissionFeedback"/>
+
+<f:section name="Title"><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.title"/></f:section>
+
+<f:section name="Main">
+    <h1 class="permission-feedback-mail__headline"><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.title"/></h1>
+
+    <p class="permission-feedback-mail__reporter">
+        <strong>{reporterName}</strong> ({reporterUsername}<f:if condition="{reporterEmail}">, {reporterEmail}</f:if>)<br>
+        <f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.groups"/>: {reporterGroups}<br>
+        <f:format.date format="d.m.Y H:i">{sentAt}</f:format.date>
+    </p>
+
+    <blockquote class="permission-feedback-mail__message"><f:format.nl2br>{message}</f:format.nl2br></blockquote>
+
+    <table class="permission-feedback-mail__context">
+        <f:if condition="{context.moduleTitle}">
+            <tr><th><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.view"/></th><td>{context.moduleTitle}</td></tr>
+        </f:if>
+        <f:if condition="{context.pageId}">
+            <tr><th><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.page"/></th><td>{context.pageTitle} [{context.pageId}]<br>{context.pagePath}</td></tr>
+        </f:if>
+        <f:if condition="{context.fileIdentifier}">
+            <tr><th><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.folder"/></th><td>{context.fileIdentifier}</td></tr>
+        </f:if>
+        <tr><th><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.backend"/></th><td><a href="{context.backendUrl}">{context.backendUrl}</a></td></tr>
+        <f:if condition="{context.frontendUrl}">
+            <tr><th><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.frontend"/></th><td><a href="{context.frontendUrl}">{context.frontendUrl}</a></td></tr>
+        </f:if>
+    </table>
+</f:section>
+</html>

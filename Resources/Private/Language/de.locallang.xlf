@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="de" datatype="plaintext" original="EXT:backend_feedback/Resources/Private/Language/locallang.xlf" date="2026-10-12T10:00:00Z" product-name="backend_feedback">
+        <body>
+            <trans-unit id="toolbar.title"><source>Report missing permission</source><target>Fehlendes Recht melden</target></trans-unit>
+            <trans-unit id="modal.title"><source>Report missing permission</source><target>Fehlendes Recht melden</target></trans-unit>
+            <trans-unit id="modal.send"><source>Send</source><target>Senden</target></trans-unit>
+            <trans-unit id="modal.cancel"><source>Cancel</source><target>Abbrechen</target></trans-unit>
+            <trans-unit id="form.intro"><source>Something you need is missing or blocked? Describe what you wanted to do. The current view is attached automatically.</source><target>Dir fehlt etwas oder etwas ist gesperrt? Beschreibe, was du tun wolltest. Die aktuelle Ansicht wird automatisch mitgeschickt.</target></trans-unit>
+            <trans-unit id="form.message"><source>What is missing?</source><target>Was fehlt dir?</target></trans-unit>
+            <trans-unit id="form.messagePlaceholder"><source>Example: I cannot upload files to this folder.</source><target>Beispiel: Ich kann in diesen Ordner keine Dateien hochladen.</target></trans-unit>
+            <trans-unit id="context.module"><source>View</source><target>Ansicht</target></trans-unit>
+            <trans-unit id="context.page"><source>Page</source><target>Seite</target></trans-unit>
+            <trans-unit id="context.folder"><source>Folder</source><target>Ordner</target></trans-unit>
+            <trans-unit id="context.link"><source>Link</source><target>Link</target></trans-unit>
+            <trans-unit id="notification.sent.title"><source>Feedback sent</source><target>Rückmeldung gesendet</target></trans-unit>
+            <trans-unit id="notification.sent.message"><source>Thank you, the administrators have been notified.</source><target>Danke, die Administratoren sind informiert.</target></trans-unit>
+            <trans-unit id="notification.failed.title"><source>Feedback not sent</source><target>Rückmeldung nicht gesendet</target></trans-unit>
+            <trans-unit id="error.messageMissing"><source>Please describe what is missing.</source><target>Bitte beschreibe, was fehlt.</target></trans-unit>
+            <trans-unit id="error.noRecipients"><source>No recipients are configured. Please contact the system maintenance directly.</source><target>Es sind keine Empfänger konfiguriert. Bitte wende dich direkt an die Systemwartung.</target></trans-unit>
+            <trans-unit id="error.sendFailed"><source>The mail could not be sent. Please try again later.</source><target>Die Mail konnte nicht gesendet werden. Bitte versuche es später noch einmal.</target></trans-unit>
+            <trans-unit id="mail.subjectPrefix"><source>[TYPO3 permissions]</source><target>[TYPO3 Rechte]</target></trans-unit>
+            <trans-unit id="mail.title"><source>Backend permission feedback</source><target>Rückmeldung zu Backend-Rechten</target></trans-unit>
+            <trans-unit id="mail.groups"><source>Groups</source><target>Gruppen</target></trans-unit>
+            <trans-unit id="mail.from"><source>From</source><target>Von</target></trans-unit>
+            <trans-unit id="mail.date"><source>Date</source><target>Datum</target></trans-unit>
+            <trans-unit id="mail.view"><source>View</source><target>Ansicht</target></trans-unit>
+            <trans-unit id="mail.page"><source>Page</source><target>Seite</target></trans-unit>
+            <trans-unit id="mail.path"><source>Path</source><target>Pfad</target></trans-unit>
+            <trans-unit id="mail.folder"><source>Folder</source><target>Ordner</target></trans-unit>
+            <trans-unit id="mail.backend"><source>Backend</source><target>Backend</target></trans-unit>
+            <trans-unit id="mail.frontend"><source>Frontend</source><target>Frontend</target></trans-unit>
+        </body>
+    </file>
+</xliff>

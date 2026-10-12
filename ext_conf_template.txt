@@ -1,0 +1,8 @@
+# cat=basic;type=string;label=Recipients: Comma separated mail addresses that receive the feedback. Without recipients the form shows a notice and nothing is sent.
+recipients =
+
+# cat=basic;type=string;label=Toolbar label: Text of the toolbar button and title of the modal. Empty uses the translated default "Report missing permission".
+toolbarLabel =
+
+# cat=basic;type=string;label=Subject prefix: Start of the mail subject. Empty uses the translated default "[TYPO3 permissions]".
+subjectPrefix =

@@ -1,0 +1,6 @@
+<f:spaceless><f:render section="Title"/>
+
+<f:render section="Main"/></f:spaceless>
+
+--
+{typo3.sitename -> f:format.raw()}, {normalizedParams.siteUrl}

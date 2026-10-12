@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  StraschekIo\BackendFeedback\:
+    resource: '../Classes/*'
+
+  StraschekIo\BackendFeedback\Controller\PermissionFeedbackController:
+    public: true

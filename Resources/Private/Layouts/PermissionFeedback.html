@@ -1,0 +1,17 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<!doctype html>
+<html lang="{languageCode}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><f:render section="Title"/></title>
+    <style type="text/css">{styles -> f:format.raw()}</style>
+</head>
+<body class="permission-feedback-mail">
+    <div class="permission-feedback-mail__container">
+        <f:render section="Main"/>
+        <p class="permission-feedback-mail__footer">{typo3.sitename}, {normalizedParams.siteUrl}</p>
+    </div>
+</body>
+</html>
+</html>

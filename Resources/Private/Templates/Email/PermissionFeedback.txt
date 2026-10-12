@@ -1,0 +1,16 @@
+<f:layout name="PermissionFeedback"/>
+
+<f:section name="Title"><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.title"/></f:section>
+
+<f:section name="Main"><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.from"/>: {reporterName -> f:format.raw()} ({reporterUsername -> f:format.raw()}<f:if condition="{reporterEmail}">, {reporterEmail -> f:format.raw()}</f:if>)
+<f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.groups"/>: {reporterGroups -> f:format.raw()}
+<f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.date"/>: <f:format.date format="d.m.Y H:i">{sentAt}</f:format.date>
+
+{message -> f:format.raw()}
+
+<f:if condition="{context.moduleTitle}"><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.view"/>: {context.moduleTitle -> f:format.raw()}
+</f:if><f:if condition="{context.pageId}"><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.page"/>: {context.pageTitle -> f:format.raw()} [{context.pageId}]
+<f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.path"/>: {context.pagePath -> f:format.raw()}
+</f:if><f:if condition="{context.fileIdentifier}"><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.folder"/>: {context.fileIdentifier -> f:format.raw()}
+</f:if><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.backend"/>: {context.backendUrl -> f:format.raw()}
+<f:if condition="{context.frontendUrl}"><f:translate key="LLL:EXT:backend_feedback/Resources/Private/Language/locallang.xlf:mail.frontend"/>: {context.frontendUrl -> f:format.raw()}</f:if></f:section>
