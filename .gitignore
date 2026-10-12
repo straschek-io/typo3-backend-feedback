@@ -1,7 +1,7 @@
 .DS_Store
 .idea/
-vendor/
+/vendor/
 composer.lock
 .php-cs-fixer.cache
 .phpunit.cache/
-public/
+/public/
